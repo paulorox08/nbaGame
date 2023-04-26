@@ -8,19 +8,20 @@ public class Season {
 
     public Season()
     {
-        Teams teams = new Teams();
-
-        currentTeamList = new ArrayList<Team>();
-        currentTeamList.add(new Team("Suns"));
-        currentTeamList.add(new Team("Bulls"));
-        currentTeamList.add(new Team("Hawks"));
-        currentTeamList.add(new Team("Nets"));
-
         schedule = new ArrayList<Game>();
         this.round = 1;
     }
 
-    public void use() {
+    public ArrayList<Team> getList() {
+        return this.currentTeamList;
+    }
+
+    public void use(Teams teams) {
+
+        for (Team t : teams.getList()) {
+            currentTeamList.add(t);
+        }
+
         while (true) {
             helpMenu();
             char choice = readChoice();
@@ -28,7 +29,7 @@ public class Season {
             switch (choice) {
                 case '1': addTeamToRound(); break;
                 case '2': displayCurrentRound(); break;
-                case '3': playGame(); break;
+                case '3': playGame(teams); break;
                 case '4': displayResults(); break;
                 case 'R': return;
                 default: System.out.println("Please enter a number between 1 and 4 or press R to return to the previous menu."); break;
@@ -36,12 +37,12 @@ public class Season {
         }
     }
 
-    private char readChoice() {
+    public char readChoice() {
         System.out.print("Enter a choice: ");
         return In.nextChar();
     }
 
-    private void addTeamToRound() {
+    public void addTeamToRound() { //Adds teams to the round
         getAllTeams();
         int numberOfTeams = currentTeamList.size();
         int gameCounter = 1;
@@ -53,11 +54,11 @@ public class Season {
                 String teamName = In.nextLine();
                 if (teamExists(teamName)) {
                     System.out.println("Team " + teamName + " has been added at the Game " + gameCounter + " position " + positionCounter);
+                    addTeamToGame(gameCounter, teamName);
                     removeTeam(teamName);
                     if (currentTeamList.size() > 0) {
                         getAllTeams();
                     }
-                    addTeamToGame(gameCounter, teamName);
                     positionCounter ++;
                 }
                 else {
@@ -69,7 +70,7 @@ public class Season {
         }
     }
 
-    private void playGame() {
+    public void playGame(Teams teams) { //Executes getting the winner and loser and updates the credits of each player
         if (schedule.size() == 0) {
             System.out.println("No game in the current round, please add teams to the round first!");
         }
@@ -77,12 +78,19 @@ public class Season {
             for (Game i: schedule) {
                 String winner = i.playGame();
                 String loser = i.getLoser();
-                double credit = i.newCredit();
 
-                currentTeamList.add(new Team(winner));
+                i.updateCredit(winner, loser);
+
+                for (Team x: i.getList()) {
+                    teams.updateTeam(x);
+                }
+
+                for (Team y: teams.getList()) {
+                    if (y.getTeamName().equals(winner)) {
+                        currentTeamList.add(y);
+                    }
+                }
                 records.add(new Record(winner, loser, i.getTerm(), this.round));
-
-                i.updateCredit(winner, loser, credit);
             }
             System.out.println("All games finished! You can use 4 to check the results.");
 
@@ -94,9 +102,9 @@ public class Season {
             this.round ++;
             schedule.clear();
         }
-    }
+    } 
 
-    private void displayCurrentRound() {
+    public void displayCurrentRound() { //Displays the teams in the current round
         if (schedule.size() > 0) {
             Utils.GameHeader();
             for (Game i: schedule) {
@@ -109,7 +117,7 @@ public class Season {
         }
     }
 
-    private void displayResults() {
+    public void displayResults() { //Gets the winner and loser
         Utils.RecordHeader();
         for (Record i: records) {
             i.displayResults();
@@ -117,15 +125,17 @@ public class Season {
         Utils.RecordEnd();
     }
 
-    private void addTeamToGame(int gameCounter, String teamName) {
+    public void addTeamToGame(int gameCounter, String teamName) { //Adds team to the game depending on which game number it is
         for (Game i: schedule) {
             if (i.getTerm() == gameCounter) {
-                i.addTeamToGame(teamName);
+                for (Team x: currentTeamList) {
+                    i.addTeamToGame(x, teamName);
+                }
             }
         }
     }
 
-    private void getAllTeams() {
+    public void getAllTeams() { //Gets all the teams that hasn't been added to a round yet
         System.out.println("The existing teams are as follows: ");
 
         for (int i = 0; i < currentTeamList.size(); i++) {
@@ -138,7 +148,7 @@ public class Season {
         }
     }
 
-    private void removeTeam(String teamName) {
+    public void removeTeam(String teamName) { //Remove the teams that are in the round
         for (int i = 0; i < currentTeamList.size(); i++) {
             if (currentTeamList.get(i).getTeamName().equals(teamName)) {
                 currentTeamList.remove(currentTeamList.get(i));
@@ -146,7 +156,7 @@ public class Season {
         }
     }
 
-    private boolean teamExists(String teamName) {
+    public boolean teamExists(String teamName) { //Make sure the team being added exists
         for (Team i: currentTeamList) {
             if (i.getTeamName().equals(teamName)) {
                 return true;
@@ -155,7 +165,7 @@ public class Season {
         return false;
     }
 
-    private void helpMenu() {
+    public void helpMenu() {
         System.out.println("Welcome to the season page! Please make a selection from the menu:");
         System.out.println("1. Add a team to the round.");
         System.out.println("2. Display the current round.");

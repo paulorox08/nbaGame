@@ -2,43 +2,21 @@ import java.util.ArrayList;
 
 public class Players {
     private ArrayList<Player> Players;
+
     public Players()
     {
         Players = new ArrayList<Player>();
-        Players.add(new Player("Devin Booker", 2500.00, 26, 1));
-        Players.add(new Player("Chris Paul", 1500.00, 37, 3));
-        Players.add(new Player("Deandre Ayton", 2000.00, 24, 22));
-        Players.add(new Player("Kevin Durant", 3000.00, 34, 35));
-        Players.add(new Player("Terrence Ross", 1000.00, 32, 8));
-
-        Players.add(new Player("Andre Drummond", 1500.00, 29, 3));
-        Players.add(new Player("Zach LaVine", 3000.00, 28, 8));
-        Players.add(new Player("Dalen Terry", 900.00, 20, 25));
-        Players.add(new Player("Terry Taylor", 1000.00, 23, 32));
-        Players.add(new Player("Carlik Jones", 800.00, 25, 22));
-
-        Players.add(new Player("Trae Young", 2200.00, 24, 11));
-        Players.add(new Player("John Collins", 2000.00, 25, 20));
-        Players.add(new Player("Aaron Holiday", 800.00, 26, 3));
-        Players.add(new Player("Jalen Johnson", 1000.00, 21, 1));
-        Players.add(new Player("Trent Forrest", 1200.00, 24, 2));
-
-        Players.add(new Player("Mikal Bridges", 2400.00, 26, 1));
-        Players.add(new Player("Ben Simmons", 2000.00, 26, 10));
-        Players.add(new Player("Patty Mills", 900.00, 34, 8));
-        Players.add(new Player("Joe Harris", 1200.00, 31, 12));
-        Players.add(new Player("Seth Curry", 1900.00, 32, 30));
     }
 
-    public void add(String name, double credit, int age, int No) {
+    public ArrayList<Player> getList() { //Gets the list of players
+        return this.Players;
+    }
+    
+    public void add(String name, double credit, int age, int No) { //adds new player
         Players.add(new Player(name, credit, age, No));
     }
 
-    public ArrayList<Player> getPlayersList() {
-        return Players;
-    }
-
-    public void setTeamNew(String name) {
+    public void setTeamNew(String name) { //Sets the team of a player
         for (Player i: Players) {
             if (i.getTeam().equals("Null")) {
                 i.setTeamNew(name);
@@ -46,7 +24,7 @@ public class Players {
         }
     }
 
-    public void setNameNew(String teamName, String oldName, String newName) {
+    public void setNameNew(String teamName, String oldName, String newName) { //Sets the name of the player
         for (Player i: Players) {
             if (i.getTeam().equals(teamName) && i.getName().toLowerCase().equals(oldName.toLowerCase())) {
                 i.setNameNew(newName);
@@ -54,7 +32,7 @@ public class Players {
         }
     }
 
-    public void setCreditNew(String teamName, String oldName, double newCredit) {
+    public void setCreditNew(String teamName, String oldName, double newCredit) { //Sets the credit of the player
         for (Player i: Players) {
             if (i.getTeam().equals(teamName) && i.getName().toLowerCase().equals(oldName.toLowerCase())) {
                 i.setCreditNew(newCredit);
@@ -63,7 +41,7 @@ public class Players {
         }
     }
 
-    public void setNoNew(String teamName, String oldName, int newNo) {
+    public void setNoNew(String teamName, String oldName, int newNo) { //Sets the No of the player
         for (Player i: Players) {
             if (i.getTeam().equals(teamName) && i.getName().toLowerCase().equals(oldName.toLowerCase())) {
                 i.setNoNew(newNo);
@@ -71,7 +49,7 @@ public class Players {
         }
     }
 
-    public void setAgeNew(String teamName, String oldName, int newAge) {
+    public void setAgeNew(String teamName, String oldName, int newAge) { //Sets the age of the player
         for (Player i: Players) {
             if (i.getTeam().equals(teamName) && i.getName().toLowerCase().equals(oldName.toLowerCase())) {
                 i.setAgeNew(newAge);
@@ -79,7 +57,7 @@ public class Players {
         }
     }
 
-    public void getPlayers(String teamName) {
+    public void getPlayers(String teamName) { //Gets the players of a team
         for (Player i: Players) {
             if (i.getTeam().equals(teamName)) {
                 System.out.println(i.toString());
@@ -94,6 +72,7 @@ public class Players {
                 counter ++;
             }
         }
+
         return counter;
     }
 
@@ -129,7 +108,7 @@ public class Players {
         }
     }
 
-    public boolean existingNo(String teamName, int No) {
+    public boolean existingNo(String teamName, int No) { //Checks if the No exists already
         for (Player i: Players) {
             if (i.getTeam().equals(teamName) && i.getNo() == No) {
                 return true;
@@ -139,7 +118,7 @@ public class Players {
         return false;
     }
 
-    public String existingPlayer(String teamName, int No) {
+    public String existingPlayer(String teamName, int No) { //Checks if the player exists already
         for (Player i: Players) {
             if (i.getTeam().equals(teamName) && i.getNo() == No) {
                 return i.getName();
@@ -149,7 +128,6 @@ public class Players {
         return null;
     }
 
-    
     public void getPlayerByTeam(String teamName) { //For displaying all players for all teams
         for (Player i: Players) {
             if (i.getTeam().equals(teamName)) {
@@ -166,7 +144,7 @@ public class Players {
         }
     }
 
-    public void getPlayersByLevel(String level, String teamName) {
+    public void getPlayersByLevel(String level, String teamName) { //Gets the players by their level
         for (Player i: Players) {
             if (i.getTeam().equals(teamName)) {
 
@@ -177,7 +155,7 @@ public class Players {
         }
     }
 
-    public boolean existingName(String teamName, String name) {
+    public boolean existingName(String teamName, String name) {//Checks if the name already exists
         for (Player i: Players) {
             if (i.getTeam().equals(teamName) && i.getName().toLowerCase().equals(name.toLowerCase())) {
                 return true;
@@ -186,7 +164,7 @@ public class Players {
         return false;   
     }
 
-    public String getPlayer(String teamName, String playerName) {
+    public String getPlayer(String teamName, String playerName) { //Gets the player from a team based on their name
         for (Player i: Players) {
             if (i.getTeam().equals(teamName) && i.getName().toLowerCase().equals(playerName.toLowerCase())) {
                 return i.getName().toLowerCase();
@@ -195,7 +173,7 @@ public class Players {
         return "Player doesn't exist";
     }
 
-    public void deletePlayer(String teamName, String playerName) {
+    public void deletePlayer(String teamName, String playerName) { //Deletes a player in a team
         for (int i = 0; i < Players.size(); i++) {
             if (Players.get(i).getTeam().equals(teamName) && Players.get(i).getName().equals(playerName)) {
                 Players.remove(Players.get(i));
@@ -203,22 +181,27 @@ public class Players {
         }
     }
 
-    public void updateCreditWinner(String teamName, double credit) {
+    public void updateCreditWinner(String winner, double newCredit) { //Updates the credits of the winners
         for (Player i: Players) {
-            if (i.getTeam().equals(teamName)) {
-                i.updateCreditWinner(credit);
-                i.setLevelNew(credit);
+            if (i.getTeam().equals(winner)) {
+                // System.out.println(i.toString());
+                double cred = i.getCredit() + newCredit;
+                i.setCreditNew(cred);
+                i.setLevelNew(cred);
+                // System.out.println(i.toString());
             }
         }
     }
 
-    public void updateCreditLoser(String teamName, double credit) {
-        for (int i = 0; i < Players.size(); i++) {
-            if (Players.get(i).getTeam().equals(teamName)) {
-                Players.get(i).updateCreditLoser(credit);
-                Players.get(i).setLevelNew(credit);
+    public void updateCreditLoser(String loser, double newCredit) { //Updates the credits of the losers
+        for (Player i: Players) {
+            if (i.getTeam().equals(loser)) {
+                // System.out.println(i.toString());
+                double cred = i.getCredit() - newCredit;
+                i.setCreditNew(cred);
+                i.setLevelNew(cred);
+                // System.out.println(i.toString());
             }
-            System.out.println(Players.get(i).toString());
         }
     }
 

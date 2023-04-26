@@ -61,6 +61,7 @@ public class Player {
                 return "Nets";
             }
         }
+
         return "Null";
     }
 
@@ -92,7 +93,7 @@ public class Player {
         return this.team;
     }
 
-    public double getCredit() {
+    public Double getCredit() {
         return this.credit;
     }
 
@@ -110,14 +111,6 @@ public class Player {
 
     public String toString() {
         return name + " " + credit + " " + age + " " + No + " " + team + " " + level;
-    }
-
-    public void updateCreditWinner(double credit) {
-            this.credit += credit;
-    }
-
-    public void updateCreditLoser(double credit) {
-        this.credit -= credit;
     }
 
 

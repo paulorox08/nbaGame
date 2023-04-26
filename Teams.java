@@ -3,12 +3,25 @@ public class Teams {
 
     public ArrayList<Team> teams;
     public Teams()
-    {   
+    {
         teams = new ArrayList<Team>();
         teams.add(new Team("Suns"));
         teams.add(new Team("Bulls"));
         teams.add(new Team("Hawks"));
         teams.add(new Team("Nets"));
+    }
+
+    public ArrayList<Team> getList() { //Gets the teams list
+        return this.teams;
+    }
+
+    public void updateTeam(Team team) { //Updates the teams list based on the results of the game
+        for (int x = 0; x < teams.size(); x ++) {
+            if (teams.get(x).getTeamName().equals(team.getTeamName())) {
+                teams.remove(teams.get(x));
+            }
+        }
+        teams.add(team);
     }
 
     public void use() {
@@ -29,22 +42,56 @@ public class Teams {
         }
     }
 
-    private char readChoice() {
+    public void orderTeams() { //Re-orders the teams as Suns, Bulls, Hawks, Nets
+        String[] order = {"Suns", "Bulls", "Hawks", "Nets"};
+
+        int counter = 0;
+
+        for (int x = 0; x < order.length - 1; x ++) {
+            if (order[x].equals(teams.get(x).getTeamName()) == false) {
+                counter ++;
+            }
+        }
+
+        if (counter > 0) {
+            for (int i = 0; i < teams.size() - 1; i ++) {
+                for (int j = 0; j < teams.size() - 1; j ++) {
+                    int first = 0;
+                    int second = 0;
+                    for (int k = 0; k < order.length; k ++) {
+                        if (teams.get(j).getTeamName().equals(order[k])) {
+                            first = k;
+                        }
+                        if (teams.get(j + 1).getTeamName().equals(order[k])) {
+                            second = k;
+                        }
+                    }
+                    if (first > second) {
+                        Team temp = teams.get(j);
+                        teams.set(j, teams.get(j + 1));
+                        teams.set(j + 1, temp);
+                    }
+                }
+            }
+        }
+    }
+
+    public char readChoice() {
         System.out.print("Enter a choice: ");
         return In.nextChar();
     }
 
-    private void displayTeams() { //For displaying Teams
+    public void displayTeams() { //For displaying Teams
+        orderTeams();
         Utils.teamsHeader();
         for (Team i: teams) {
             System.out.format(Utils.teamsFormat, i.getTeamName(), i.numberOfPlayers(i.getTeamName()), i.averagePlayerCredit(i.getTeamName()), i.averageAge(i.getTeamName()));
-            // System.out.format(Utils.teamsFormat, i.getTeamName(), i.numberOfPlayers(i.getTeamName()), i.newAvg(i.getTeamName()), i.averageAge(i.getTeamName()));
         }
 
         Utils.teamTableEnd();
     }
 
-    private void displayPlayers() {
+    public void displayPlayers() { //For displaying players
         Utils.DisplayPlayerFromAllTeamsHeader();
         for (Team i: teams) {
             i.getPlayerByTeam(i.getTeamName());
@@ -53,7 +100,7 @@ public class Teams {
 
     }
 
-    private void addNewTeam() {
+    public void addNewTeam() { //Adds new team to teams
         System.out.print("Please enter the name of the team: ");
         String name = In.nextLine();
 
@@ -70,7 +117,7 @@ public class Teams {
         }
     }
 
-    private void deleteTeam() {
+    public void deleteTeam() { //Deletes team from teams
         System.out.print("Please enter the team's name that you want to delete: ");
         String teamName = In.nextLine();
 
@@ -82,7 +129,7 @@ public class Teams {
         System.out.println("The team " + teamName + " has been deleted.");
     }
 
-    private void manageTeam() {
+    public void manageTeam() { 
         System.out.print("Please enter the team's name that you want to manage: ");
         String name = In.nextLine();
 
@@ -107,7 +154,7 @@ public class Teams {
         }
     }
 
-    private void displayPlayersByTeam(String name) {
+    public void displayPlayersByTeam(String name) { //Displays all the players in that team
         Utils.playerHeader();
         for (Team i: teams) {
             if (i.getTeamName().equals(name)) {
@@ -117,7 +164,7 @@ public class Teams {
         }
     }
 
-    private void addNewPlayer(String name) {
+    public void addNewPlayer(String name) { //Adds player to that team
         System.out.print("Please enter the player's name: ");
         String playerName = In.nextLine();
 
@@ -140,7 +187,7 @@ public class Teams {
         System.out.println("Player " + playerName + " added!");
     }
 
-    private void updatePlayer(String teamName) {
+    public void updatePlayer(String teamName) { //Updates the player info
         System.out.print("Please enter the player's name: ");
         String playerName = In.nextLine().toLowerCase();
 
@@ -172,7 +219,7 @@ public class Teams {
         }
     }
 
-    private void deletePlayer(String teamName) {
+    public void deletePlayer(String teamName) { //Deletes player
         System.out.print("Please enter the player's name: ");
         String playerName = In.nextLine();
 
@@ -189,7 +236,7 @@ public class Teams {
         }
     }
 
-    private void getPlayersByLevel() {
+    public void getPlayersByLevel() { //Gets the players of a particular level
         System.out.print("Please enter the player's level that you want to view: ");
         String level = In.nextLine();
 
@@ -210,7 +257,7 @@ public class Teams {
         }
     }
 
-    private boolean teamExists(String teamName) {
+    public boolean teamExists(String teamName) { //Checks if the team exists in teams
         for (Team i: teams) {
             if (i.getTeamName().equals(teamName)) {
                 return true;
@@ -220,7 +267,7 @@ public class Teams {
         return false;
     }
 
-    private boolean playerExists(String teamName, String name) {
+    public boolean playerExists(String teamName, String name) { //Checks if the player exists
         for (Team i: teams) {
             if (i.getTeamName().equals(teamName) && i.existingName(teamName, name)) {
                 return true;
@@ -229,7 +276,7 @@ public class Teams {
         return false;
     }
 
-    private boolean levelExists(String level) {
+    public boolean levelExists(String level) { //Checks if the level exists
         if (level.equals("Edge") || level.equals("Common") || level.equals("Core") || level.equals("All Star")) {
             return true;
         }
@@ -238,7 +285,7 @@ public class Teams {
         }
     }
 
-    private void helpMenu() {
+    public void helpMenu() {
         System.out.println("Welcome to the Teams Page! Please make a selection from the menu:");
         System.out.println("1. Display all teams.");
         System.out.println("2. Display all players.");
@@ -249,7 +296,7 @@ public class Teams {
         System.out.println("R. Return to previous menu.");
     }
 
-    private void manageTeamMenu() {
+    public void manageTeamMenu() {
         System.out.println("1. Display team's players.");
         System.out.println("2. Add a new player.");
         System.out.println("3. Update an existing player.");
@@ -257,7 +304,7 @@ public class Teams {
         System.out.println("R. Return to previous menu.");
     }
 
-    private int checkNoExists(String name) {
+    public int checkNoExists(String name) { //Checks if the No exists
         int No = In.nextInt();
 
         while (true) {
@@ -281,14 +328,5 @@ public class Teams {
         return No;
     }
 
-    private void updateCredit(String winner, String loser, double credit) {
-        for (Team i: teams) {
-            if (i.getTeamName().equals(winner)) {
-                i.updateCreditWinner(winner, credit);
-            }
-            else if (i.getTeamName().equals(loser)) {
-                i.updateCreditLoser(loser, credit);
-            }
-        }
-    }
+
 }
